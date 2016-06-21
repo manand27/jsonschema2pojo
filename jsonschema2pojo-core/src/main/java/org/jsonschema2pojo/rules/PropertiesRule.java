@@ -16,12 +16,20 @@
 
 package org.jsonschema2pojo.rules;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.sun.codemodel.*;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.jsonschema2pojo.Schema;
 
-import java.util.Iterator;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.sun.codemodel.JBlock;
+import com.sun.codemodel.JDefinedClass;
+import com.sun.codemodel.JExpr;
+import com.sun.codemodel.JMethod;
+import com.sun.codemodel.JType;
+import com.sun.codemodel.JVar;
 
 /**
  * Applies the "properties" schema rule.
@@ -58,10 +66,15 @@ public class PropertiesRule implements Rule<JDefinedClass, JDefinedClass> {
             node = JsonNodeFactory.instance.objectNode();
         }
 
-        for (Iterator<String> properties = node.fieldNames(); properties.hasNext(); ) {
-            String property = properties.next();
-
-            ruleFactory.getPropertyRule().apply(property, node.get(property), jclass, schema);
+//        for (Iterator<String> properties = node.fieldNames(); properties.hasNext(); ) {
+//            String property = properties.next();
+//
+//            ruleFactory.getPropertyRule().apply(property, node.get(property), jclass, schema);
+//        }
+        //the field is required to look for the custom annotation 
+        for (Iterator<Map.Entry<String, JsonNode>> properties = node.fields(); properties.hasNext(); ) {
+          Entry<String, JsonNode> property = properties.next();
+          ruleFactory.getPropertyRule().apply(property.getKey(), property.getValue(), jclass, schema);
         }
 
         if (ruleFactory.getGenerationConfig().isGenerateBuilders()) {

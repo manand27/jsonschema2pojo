@@ -76,6 +76,19 @@ public interface Annotator {
      */
     void propertyGetter(JMethod getter, String propertyName);
 
+    
+    /**
+     * Allow custom annotations of java getter methods
+     * @param getter
+     *            the method that will be used to get the value of the given
+     *            JSON property
+     * @param propertyName
+     *            the name of the JSON property that this getter gets
+     * @param propertyNode
+     *            the schema node defining this property
+     */
+    void propertyGetter(JMethod getter, String propertyName, JsonNode propertyNode);
+
     /**
      * Add the necessary annotation to mark a Java method as the setter for a
      * JSON property

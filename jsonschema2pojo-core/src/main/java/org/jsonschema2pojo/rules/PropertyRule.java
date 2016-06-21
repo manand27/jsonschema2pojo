@@ -74,6 +74,7 @@ public class PropertyRule implements Rule<JDefinedClass, JDefinedClass> {
 
         JType propertyType = ruleFactory.getSchemaRule().apply(nodeName, node, jclass, schema);
 
+        JsonNode origNode = node;
         node = resolveRefs(node, schema);
 
         int accessModifier = ruleFactory.getGenerationConfig().isIncludeAccessors() ? JMod.PRIVATE : JMod.PUBLIC;
@@ -85,6 +86,7 @@ public class PropertyRule implements Rule<JDefinedClass, JDefinedClass> {
         if (ruleFactory.getGenerationConfig().isIncludeAccessors()) {
             JMethod getter = addGetter(jclass, field, nodeName, node);
             ruleFactory.getAnnotator().propertyGetter(getter, nodeName);
+            ruleFactory.getAnnotator().propertyGetter(getter, nodeName, origNode); //generate code for method level custom annotations
             propertyAnnotations(nodeName, node, schema, getter);
 
             JMethod setter = addSetter(jclass, field, nodeName, node);
