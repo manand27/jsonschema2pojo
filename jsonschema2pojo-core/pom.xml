@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>jsonschema2pojo-core</artifactId>
-    <version>0.4.24-PATCH-SNAPSHOT</version>
+    <version>0.4.23-PATCH</version>
 
     <name>jsonschema2pojo-core</name>
 
